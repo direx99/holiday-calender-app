@@ -1,11 +1,15 @@
 package io.dinith.holidayapp
 
 import android.graphics.Color
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +20,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import io.dinith.holidayapp.MainActivity.HolidayHolder as HolidayHolder1
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,21 +28,79 @@ class MainActivity : AppCompatActivity() {
     lateinit var holidayViewer : RecyclerView
     var holidayArray = JSONArray()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        val spinner1 = findViewById<Spinner>(R.id.spinner1)
+
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
+
+
+        val data = listOf("2000","2001","2002","2003","2023")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, data)
+
+        spinner.adapter = adapter
+        spinner.setSelection(data.indexOf(currentYear))
+        var selectedCountry : String = ""
+        var selectedYear : String = ""
+
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position) as String
+                Toast.makeText(applicationContext,"Selected $selectedItem", Toast.LENGTH_LONG).show()
+                selectedYear = selectedItem
+                getHolidaydata(selectedYear, selectedCountry)
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
+        val countries = listOf("lk","us","uk","in","jp")
+        val countryAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries)
+        val systemLocale = Locale.getDefault()
+        val systemCountry = systemLocale.country
+        spinner1.adapter = countryAdapter
+        val systemCountryIndex = countries.indexOf(systemCountry)
+        spinner1.setSelection(systemCountryIndex)
+
+
+        spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position) as String
+                Toast.makeText(applicationContext,"Selected $selectedItem", Toast.LENGTH_LONG).show()
+
+
+                selectedCountry = selectedItem
+
+                getHolidaydata(selectedYear, selectedCountry)
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
 
         holidayViewer = findViewById(R.id.Holidayviewer)
         holidayViewer.layoutManager = LinearLayoutManager(applicationContext,
             LinearLayoutManager.VERTICAL,false)
         holidayViewer.adapter = HolidayAdapter()
-        getHolidaydata()
+
+
+
 
     }
+//
+    fun getHolidaydata(selectedYear : String , selectedCountry : String) {
 
-    fun getHolidaydata(){
-
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=2b7a6949248e64c1e36bebabdc862616972d9e1e&country=lk&year=2023"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=6b1d83ebf975d4d885e9635b347fb5d51e963af4&country=$selectedCountry&year=$selectedYear"
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
@@ -75,11 +137,11 @@ class MainActivity : AppCompatActivity() {
                 holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
                 holder.txtname.text = holidayArray.getJSONObject(position).getString("name")
 
-                if (holder.txtname.text.toString().equals("Holi", ignoreCase = true)) {
-                    holder.txtname.setTextColor(Color.GREEN)
-                } else {
-                    holder.txtname.setTextColor(Color.BLACK)
-                }
+//                if (holder.txtname.text.toString().equals("Holi", ignoreCase = true)) {
+//                    holder.txtname.setTextColor(Color.GREEN)
+//                } else {
+//                    holder.txtname.setTextColor(Color.BLACK)
+//                }
 
             }catch (e:Exception){
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
