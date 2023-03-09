@@ -18,6 +18,8 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-1dp">
 
+
+
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
@@ -32,9 +34,10 @@
 
     </LinearLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
 
-        android:id="@+id/Holidayviewer"
+        android:id="@+id/HolidayView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

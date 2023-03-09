@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -26,6 +28,7 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     lateinit var holidayViewer : RecyclerView
+
     var holidayArray = JSONArray()
 
 
@@ -46,7 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val spinner1 = findViewById<Spinner>(R.id.spinner1)
-
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
 
@@ -89,10 +91,10 @@ class MainActivity : AppCompatActivity() {
                 val selectedItem = parent.getItemAtPosition(position) as String
                 Toast.makeText(applicationContext,"Selected $selectedItem", Toast.LENGTH_LONG).show()
 
-                // Retrieve the corresponding country code from the list of countries
                 selectedCountry = countries[position].first
 
                 getHolidaydata(selectedYear, selectedCountry)
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -100,11 +102,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        holidayViewer = findViewById(R.id.Holidayviewer)
+
+
+
+
+
+        holidayViewer = findViewById(R.id.HolidayView)
         holidayViewer.layoutManager = LinearLayoutManager(applicationContext,
             LinearLayoutManager.VERTICAL,false)
         holidayViewer.adapter = HolidayAdapter()
-
 
 
 
@@ -136,6 +142,7 @@ class MainActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolidayHolder {
 
             val view = LayoutInflater.from(parent.context).inflate(R.layout.holiday,parent,false)
+
             return HolidayHolder(view)
 
         }
@@ -146,15 +153,37 @@ class MainActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: HolidayHolder, position: Int) {
             try {
-                holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
+            //    holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
                 holder.txtname.text = holidayArray.getJSONObject(position).getString("name")
+                holder.txtType.text = holidayArray.getJSONObject(position).getString("primary_type")
+                var getmonth = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
+                holder.txtDay.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("day")
 
-//                if (holder.txtname.text.toString().equals("Holi", ignoreCase = true)) {
-//                    holder.txtname.setTextColor(Color.GREEN)
-//                } else {
-//                    holder.txtname.setTextColor(Color.BLACK)
-//                }
+               if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(Color.YELLOW)
+              } else {
+                   holder.roudedShape.setCardBackgroundColor(Color.WHITE)
 
+               }
+
+
+                var monthName=""
+                when (getmonth) {
+                    "1" -> monthName = "January"
+                    "2" -> monthName=("February")
+                    "3" -> monthName=("March")
+                    "4" -> monthName=("April")
+                    "5" -> monthName=("May")
+                    "6" -> monthName=("June")
+                    "7" -> monthName=("July")
+                    "8" -> monthName=("August")
+                    "9" -> monthName=("September")
+                    "10" -> monthName=("October")
+                    "11" -> monthName=("November")
+                    "12" -> monthName=("December")
+                    else -> monthName=("Invalid month number")
+                }
+              holder.txtMonth.setText( monthName)
             }catch (e:Exception){
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
             }
@@ -164,9 +193,16 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
     inner class HolidayHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val txtdate : TextView =itemView.findViewById(R.id.txtdate)
+       // val txtdate : TextView =itemView.findViewById(R.id.txtdate)
         val txtname : TextView = itemView.findViewById(R.id.txtname)
+        val txtType : TextView = itemView.findViewById(R.id.txtType)
+        val txtDay : TextView = itemView.findViewById(R.id.txtDay)
+        val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
+        val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
+
     }
 
 
