@@ -1,5 +1,6 @@
 package io.dinith.holidayapp
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -151,6 +153,7 @@ class MainActivity : AppCompatActivity() {
             return holidayArray.length()
         }
 
+        @SuppressLint("ResourceAsColor")
         override fun onBindViewHolder(holder: HolidayHolder, position: Int) {
             try {
             //    holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
@@ -160,9 +163,9 @@ class MainActivity : AppCompatActivity() {
                 holder.txtDay.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("day")
 
                if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
-                   holder.roudedShape.setCardBackgroundColor(Color.YELLOW)
-              } else {
-                   holder.roudedShape.setCardBackgroundColor(Color.WHITE)
+                   holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
+               } else {
+                   holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
 
                }
 
@@ -202,9 +205,15 @@ class MainActivity : AppCompatActivity() {
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
         val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
+        val huhu : LinearLayout = itemView.findViewById(R.id.huhu)
+
 
     }
 
+
+}
+
+private fun LinearLayout.background(lightgreen: Int) {
 
 }
 
