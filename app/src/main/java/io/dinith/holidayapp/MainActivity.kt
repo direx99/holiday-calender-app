@@ -29,8 +29,18 @@ class MainActivity : AppCompatActivity() {
     var holidayArray = JSONArray()
 
 
+    val countries = listOf(
+        Pair("lk", "Sri Lanka"),
+        Pair("us", "United States"),
+        Pair("uk", "United Kingdom"),
+        Pair("in", "India"),
+        Pair("jp", "Japan"),
+
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -40,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
 
 
-        val data = listOf("2000","2001","2002","2003","2023")
+        val data = listOf("2000","2001","2002","2022","2023")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, data)
 
         spinner.adapter = adapter
@@ -62,13 +72,16 @@ class MainActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
-        val countries = listOf("lk","us","uk","in","jp")
-        val countryAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries)
-        val systemLocale = Locale.getDefault()
-        val systemCountry = systemLocale.country
+
+
+
+        val countryAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries.map { it.second })
+        val defaultCountryCode = Locale.getDefault().country
+        val defaultCountryIndex = countries.indexOfFirst { it.first == defaultCountryCode }
+
         spinner1.adapter = countryAdapter
-        val systemCountryIndex = countries.indexOf(systemCountry)
-        spinner1.setSelection(systemCountryIndex)
+        spinner1.setSelection(defaultCountryIndex)
+
 
 
         spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -76,11 +89,10 @@ class MainActivity : AppCompatActivity() {
                 val selectedItem = parent.getItemAtPosition(position) as String
                 Toast.makeText(applicationContext,"Selected $selectedItem", Toast.LENGTH_LONG).show()
 
-
-                selectedCountry = selectedItem
+                // Retrieve the corresponding country code from the list of countries
+                selectedCountry = countries[position].first
 
                 getHolidaydata(selectedYear, selectedCountry)
-
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
