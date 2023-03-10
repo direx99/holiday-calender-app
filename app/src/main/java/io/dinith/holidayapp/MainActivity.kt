@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -30,8 +31,10 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     lateinit var holidayViewer : RecyclerView
-
+lateinit var txtMonthHeader : TextView
     var holidayArray = JSONArray()
+    lateinit var progressBar: ProgressBar
+
 
 
     val countries = listOf(
@@ -52,7 +55,12 @@ class MainActivity : AppCompatActivity() {
         val spinner = findViewById<Spinner>(R.id.spinner)
         val spinner1 = findViewById<Spinner>(R.id.spinner1)
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
+        progressBar = findViewById(R.id.progressBar)
 
+        // ...
+
+        // set the visibility of progress bar to GONE initially
+        progressBar.visibility = View.GONE
 
         val data = listOf("2000","2001","2002","2022","2023")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, data)
@@ -121,6 +129,7 @@ class MainActivity : AppCompatActivity() {
     fun getHolidaydata(selectedYear : String , selectedCountry : String) {
 
         val url = "https://calendarific.com/api/v2/holidays?&api_key=6b1d83ebf975d4d885e9635b347fb5d51e963af4&country=$selectedCountry&year=$selectedYear"
+    progressBar.visibility = View.VISIBLE
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
@@ -131,6 +140,8 @@ class MainActivity : AppCompatActivity() {
                 catch (e : Exception){
                     Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                 }
+                progressBar.visibility = View.GONE
+
             }
             ,Response.ErrorListener{ error-> })
 
@@ -161,6 +172,7 @@ class MainActivity : AppCompatActivity() {
                 holder.txtType.text = holidayArray.getJSONObject(position).getString("primary_type")
                 var getmonth = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
                 holder.txtDay.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("day")
+              //  holder.txtMonthHeader.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
 
                if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
                    holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
@@ -168,6 +180,12 @@ class MainActivity : AppCompatActivity() {
                    holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
 
                }
+
+
+
+
+
+
 
 
                 var monthName=""
@@ -205,7 +223,6 @@ class MainActivity : AppCompatActivity() {
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
         val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
-        val huhu : LinearLayout = itemView.findViewById(R.id.huhu)
 
 
     }
