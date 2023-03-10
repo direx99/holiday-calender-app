@@ -1,6 +1,7 @@
 package io.dinith.holidayapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -182,8 +183,15 @@ lateinit var txtMonthHeader : TextView
                }
 
 
+                val holiday = holidayArray.getJSONObject(position)
 
-
+                holder.txtname.text = holiday.getString("name")
+                holder.txtType.text = holiday.getString("primary_type")
+                holder.itemView.setOnClickListener {
+                    val intent = Intent(this@MainActivity, HolidayDetailsActivity::class.java)
+                    intent.putExtra("txtType", holiday.getString("primary_type"))
+                    startActivity(intent)
+                }
 
 
 
@@ -216,13 +224,18 @@ lateinit var txtMonthHeader : TextView
 
 
 
+
     inner class HolidayHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
        // val txtdate : TextView =itemView.findViewById(R.id.txtdate)
+
         val txtname : TextView = itemView.findViewById(R.id.txtname)
         val txtType : TextView = itemView.findViewById(R.id.txtType)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
         val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
+
+
+
 
 
     }
