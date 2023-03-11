@@ -29,6 +29,7 @@ import org.json.JSONObject
 import java.util.Locale
 
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var holidayViewer : RecyclerView
@@ -52,7 +53,7 @@ lateinit var txtMonthHeader : TextView
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportActionBar?.hide()
+         supportActionBar?.hide()
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val spinner1 = findViewById<Spinner>(R.id.spinner1)
@@ -224,16 +225,55 @@ lateinit var txtMonthHeader : TextView
                 val month = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()
                 if (position == 0 || month != holidayArray.getJSONObject(position - 1).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()) {
                     holder.monthHeader.visibility = View.VISIBLE
+                    holder.dottedBar.visibility = View.GONE
 
                 } else {
                     holder.monthHeader.visibility = View.GONE
+                    holder.dottedBar.visibility = View.VISIBLE
+
                 }
 
-               if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
-                   holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
-               } else {
-                   holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
+               if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_card
+                       )
+                   )
+               }
 
+                   else if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.green_card
+                       )
+                   )
+               }
+
+                       else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_200
+                       )
+                   )
+               }
+                           else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_200
+                       )
+                   )
+
+               } else {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_200
+                       )
+                   )
                }
 
 
@@ -251,6 +291,8 @@ lateinit var txtMonthHeader : TextView
 
 
                 var monthName=""
+                var monthNameShort=""
+
                 when (getmonth) {
                     "1" -> monthName = "January"
                     "2" -> monthName=("February")
@@ -267,12 +309,28 @@ lateinit var txtMonthHeader : TextView
                     else -> monthName=("Invalid month number")
                 }
 
+                when (getmonth) {
+                    "1" -> monthNameShort = "jan"
+                    "2" -> monthNameShort=("feb")
+                    "3" -> monthNameShort=("March")
+                    "4" -> monthNameShort=("April")
+                    "5" -> monthNameShort=("May")
+                    "6" -> monthNameShort=("June")
+                    "7" -> monthNameShort=("July")
+                    "8" -> monthNameShort=("August")
+                    "9" -> monthNameShort=("September")
+                    "10" -> monthNameShort=("October")
+                    "11" -> monthNameShort=("November")
+                    "12" -> monthNameShort=("December")
+                    else -> monthNameShort=("Invalid month number")
+                }
+
 
               holder.txtMonth.setText( monthName)
 
 
 
-                holder.monthHeader.setText( monthName)
+                holder.monthHeader.setText( monthNameShort)
 
             }catch (e:Exception){
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
@@ -296,6 +354,8 @@ lateinit var txtMonthHeader : TextView
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
         val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
+
+        val dottedBar : LinearLayout = itemView.findViewById(R.id.dottedBar)
 
 
 
