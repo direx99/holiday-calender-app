@@ -4,7 +4,15 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+    <TextView
 
+        android:id="@+id/monthHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="January"
+        android:textAlignment="textEnd"
+        android:layout_marginRight="20dp"
+        android:textSize="20dp"/>
     <androidx.cardview.widget.CardView
         android:id="@+id/roudedShape"
         android:layout_width="match_parent"
