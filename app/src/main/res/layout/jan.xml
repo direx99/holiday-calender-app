@@ -7,7 +7,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/roudedShape"
+        android:id="@+id/roundedShape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
@@ -37,7 +37,7 @@
                 android:text="06"
                 android:textSize="30dp"/>
             <TextView
-                android:id="@+id/txtMonth"
+                android:id="@+id/monthTextview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="January"

@@ -12,4 +12,11 @@
     <color name="midgreen">#34A853</color>
 
 
+
+    <color name="red_card">#FF5C5C</color>
+    <color name="green_card">#34A853</color>
+    <color name="orange_card">#FFBE5C</color>
+    <color name="purple_card">#9284EB</color>
+
+
 </resources>

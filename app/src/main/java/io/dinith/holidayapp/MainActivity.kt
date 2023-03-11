@@ -2,7 +2,6 @@ package io.dinith.holidayapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,6 +28,7 @@ import org.json.JSONObject
 import java.util.Locale
 
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var holidayViewer : RecyclerView
@@ -41,7 +41,7 @@ lateinit var txtMonthHeader : TextView
     val countries = listOf(
         Pair("lk", "Sri Lanka"),
         Pair("us", "United States"),
-        Pair("uk", "United Kingdom"),
+        Pair("uk", "United Kigdom"),
         Pair("in", "India"),
         Pair("jp", "Japan"),
 
@@ -52,7 +52,7 @@ lateinit var txtMonthHeader : TextView
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportActionBar?.hide()
+         supportActionBar?.hide()
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val spinner1 = findViewById<Spinner>(R.id.spinner1)
@@ -131,7 +131,7 @@ lateinit var txtMonthHeader : TextView
     fun getHolidaydata(selectedYear : String , selectedCountry : String) {
 
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=2b7a6949248e64c1e36bebabdc862616972d9e1e&country=$selectedCountry&year=$selectedYear"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=faac35c605ffc22e2a9877b1214f0dd7d616fe8d&country=$selectedCountry&year=$selectedYear"
     progressBar.visibility = View.VISIBLE
 
         val result = StringRequest(Request.Method.GET,url,
@@ -224,16 +224,55 @@ lateinit var txtMonthHeader : TextView
                 val month = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()
                 if (position == 0 || month != holidayArray.getJSONObject(position - 1).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()) {
                     holder.monthHeader.visibility = View.VISIBLE
+                    holder.dottedBar.visibility = View.GONE
 
                 } else {
                     holder.monthHeader.visibility = View.GONE
+                    holder.dottedBar.visibility = View.VISIBLE
+
                 }
 
-               if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
-                   holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
-               } else {
-                   holder.roudedShape.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.lightgreen))
+               if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_card
+                       )
+                   )
+               }
 
+                   else if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.green_card
+                       )
+                   )
+               }
+
+                       else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_200
+                       )
+                   )
+               }
+                           else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_200
+                       )
+                   )
+
+               } else {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.purple_200
+                       )
+                   )
                }
 
 
@@ -241,16 +280,23 @@ lateinit var txtMonthHeader : TextView
 
                 holder.txtname.text = holiday.getString("name")
                 holder.txtType.text = holiday.getString("primary_type")
+//                holder.txtDay.text = holiday.getString("day")
                 holder.roudedShape.setOnClickListener {
                     val intent = Intent(this@MainActivity, HolidayDetailsActivity::class.java)
-                    intent.putExtra("txtType", holiday.getString("name"))
+                    intent.putExtra("txtName", holiday.getString("name"))
+                    intent.putExtra("txtType", holiday.getString("primary_type"))
+                    intent.putExtra("bgColorResId", getBackgroundColorResId(holder.txtType.text.toString()))
+//                    intent.putExtra("txtDay", holiday.getString("day"))
                     startActivity(intent)
                 }
 
 
 
 
+
                 var monthName=""
+                var monthNameShort=""
+
                 when (getmonth) {
                     "1" -> monthName = "January"
                     "2" -> monthName=("February")
@@ -267,12 +313,28 @@ lateinit var txtMonthHeader : TextView
                     else -> monthName=("Invalid month number")
                 }
 
+                when (getmonth) {
+                    "1" -> monthNameShort = "jan"
+                    "2" -> monthNameShort=("feb")
+                    "3" -> monthNameShort=("March")
+                    "4" -> monthNameShort=("April")
+                    "5" -> monthNameShort=("May")
+                    "6" -> monthNameShort=("June")
+                    "7" -> monthNameShort=("July")
+                    "8" -> monthNameShort=("August")
+                    "9" -> monthNameShort=("September")
+                    "10" -> monthNameShort=("October")
+                    "11" -> monthNameShort=("November")
+                    "12" -> monthNameShort=("December")
+                    else -> monthNameShort=("Invalid month number")
+                }
+
 
               holder.txtMonth.setText( monthName)
 
 
 
-                holder.monthHeader.setText( monthName)
+                holder.monthHeader.setText( monthNameShort)
 
             }catch (e:Exception){
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
@@ -280,7 +342,14 @@ lateinit var txtMonthHeader : TextView
         }
 
     }
-
+    private fun getBackgroundColorResId(type: String): Int {
+        return when (type.toLowerCase()) {
+            "public holiday" -> R.color.purple_card
+            "observance" -> R.color.green_card
+            // Add more cases for other types if needed
+            else -> R.color.purple_200
+        }
+    }
 
 
 
@@ -294,8 +363,10 @@ lateinit var txtMonthHeader : TextView
 
         val txtType : TextView = itemView.findViewById(R.id.txtType)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
-        val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
-        val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
+        val txtMonth : TextView = itemView.findViewById(R.id.monthTextview)
+        val roudedShape : CardView = itemView.findViewById(R.id.roundedShape)
+
+        val dottedBar : LinearLayout = itemView.findViewById(R.id.dottedBar)
 
 
 
