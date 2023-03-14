@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,46 +7,179 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".HolidayDetailsActivity"
+
     >
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1033dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/poyabg1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-1dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
 
     <LinearLayout
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/midgreen"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
         android:padding="20dp"
-        android:orientation="vertical">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="360dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:orientation="horizontal">
+
+            <TextView
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/orange_round"
+                android:textSize="86dp"
+
+                android:text="14"/>
+            <LinearLayout
+                android:layout_width="2dp"
+                android:layout_marginVertical="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_dark"
+                android:orientation="vertical"/>
+
+            <TextView
+                android:textSize="86dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_dark"
+                android:text="MAR"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="MAR"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/dark_blue"
+            android:textSize="40dp" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange_round"
+            android:textSize="20dp"
+            android:text="Public Holiday"
+
+            />
+        <TextView
+            android:id="@+id/des"
+android:fontFamily="@font/altonetrialregular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mid_blue"
+            android:textSize="20dp"
+            android:text="Duruthu Full Moon Poya Day is a public holiday in Sri Lanka"
+            />
+
+       <androidx.cardview.widget.CardView
+
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:paddingBottom="10dp"
+           android:backgroundTint="@color/red_card"
+           app:cardCornerRadius="60dp"
+
+           >
+           <LinearLayout
+               android:id="@+id/holiBtn"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:padding="5dp"
+               android:orientation="horizontal">
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:gravity="center"
+                   android:textColor="@color/white"
+                   android:textSize="14dp"
+
+                   android:text="Reminder me"/>
+           </LinearLayout>
+
+       </androidx.cardview.widget.CardView>
 
 
-
-    <TextView
-        android:id="@+id/nameTextView"
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="30dp"
-        android:maxLines="2"
-        android:text="Duruthu Full Moon Poya Day"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="94dp" />
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:foregroundGravity="bottom"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        app:flow_verticalAlign="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="-16dp">
 
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="16"
-        android:textSize="100dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="134dp"
-        tools:layout_editor_absoluteY="159dp" />
-    <TextView
-        android:id="@+id/txtMonth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="November"
-        android:textSize="40dp"
-        tools:layout_editor_absoluteX="134dp"
-        tools:layout_editor_absoluteY="159dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home" />
+
+            <ImageView
+                android:id="@+id/ihji"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home" />
+
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
-</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
