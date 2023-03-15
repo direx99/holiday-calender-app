@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lightgray">#FF018786</color>
+    <color name="lightgray">#DBE4FB</color>
     <color name="lightgreen">#E2F2E1</color>
     <color name="midgreen">#34A853</color>
 
@@ -15,7 +15,7 @@
 
     <color name="red_card">#FF5C5C</color>
     <color name="green_card">#34A853</color>
-    <color name="orange_card">#FFBE5C</color>
+    <color name="orange_card">#FFD79B</color>
     <color name="purple_card">#5A405D</color>
 
     <color name="red_round">#FF2424</color>
@@ -27,6 +27,14 @@
     <color name="gray_dark">#808AA4</color>
     <color name="dark_blue">#233149</color>
     <color name="mid_blue">#3F4F6A</color>
+
+    <color name="appbg">#F3F3F3</color>
+
+    <color name="bg">#FFEEEE</color>
+    <color name="light_puple">#FAEDF6</color>
+
+
+
 
     233149
 

@@ -5,104 +5,179 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/purple_card"
-    android:backgroundTint="@color/purple_card"
+    android:backgroundTint="@color/appbg"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeView">
+
+
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="-55dp"
-            android:orientation="vertical"
-            app:cardBackgroundColor="@color/purple_card">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginBottom="10dp"
-                android:text="March 2023"
-                android:textColor="@color/white"
-                android:textSize="32dp"
-                android:textStyle="bold">
-
-            </TextView>
-
-        </androidx.cardview.widget.CardView>
-
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:dateTextAppearance="@style/CalenderViewDateCustomText"
-            android:theme="@style/CalenderViewCustom"
-            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText">
-
-        </CalendarView>
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="600dp"
-
-            android:orientation="vertical">
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="40dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="30dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="This Month"
-                        android:textColor="@color/purple_card"
-                        android:textSize="30dp"
-                        android:textStyle="bold"></TextView>
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:orientation="vertical" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/dailyView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:padding="20dp" />
-
-            </androidx.cardview.widget.CardView>
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calendar App"
+                android:textSize="30dp"
+                android:fontFamily="@font/altonetrialregular"
+                />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="right"
+    android:layout_marginRight="30dp"
+    android:orientation="horizontal">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/setting" />
+</LinearLayout>
         </LinearLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <ImageView
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="center"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/marker"/>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sri Lanka"
+        android:textSize="15dp"
+        />
+
+
+</LinearLayout>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="130dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="Today" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/datenum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="90dp"
+                android:textColor="@color/orange_round"
+                android:text="14" />
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:layout_height="match_parent"
+                android:textSize="90dp"
+                android:background="@color/gray_dark"
+                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="90dp"
+                android:textColor="@color/dark_blue"
+                android:text="MAR" />
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            app:cardCornerRadius="15dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/spring"
+                android:scaleType="centerCrop"/>
+
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:padding="20dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/black"
+        android:text="This Month"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textAlignment="textEnd"
+        android:layout_height="match_parent"
+        android:textSize="15dp"
+        android:fontFamily="@font/altonetrialregular"
+        android:layout_marginRight="20dp"
+        android:text="slide to scroll"
+        />
+</LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dailyView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/white"
         android:foregroundGravity="bottom"
         android:orientation="horizontal"
         android:paddingHorizontal="20dp"
@@ -121,26 +196,33 @@
 
             <ImageView
                 android:id="@+id/imageView1"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/home" />
+                android:src="@drawable/hsdark" />
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="80dp"
-                android:layout_marginRight="80dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/home" />
+            <LinearLayout
+                android:id="@+id/btnbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginRight="80dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/cal" />
+            </LinearLayout>
+
 
             <ImageView
                 android:id="@+id/ihji"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@color/white"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/home" />
+                android:src="@drawable/globe" />
 
 
         </LinearLayout>

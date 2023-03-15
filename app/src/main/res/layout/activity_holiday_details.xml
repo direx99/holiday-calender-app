@@ -18,16 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-1dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        android:text="Back"
+        android:src="@drawable/backk"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </TextView>
 
     <LinearLayout
         android:layout_marginTop="80dp"
@@ -41,11 +41,14 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="360dp">
         <LinearLayout
+            android:layout_marginTop="80dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:gravity="left"
             android:orientation="horizontal">
+
+
 
             <TextView
                 android:gravity="center"
@@ -93,6 +96,7 @@
 
             />
         <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/des"
 android:fontFamily="@font/altonetrialregular"
             android:layout_width="match_parent"
@@ -103,7 +107,9 @@ android:fontFamily="@font/altonetrialregular"
             />
 
        <androidx.cardview.widget.CardView
-
+           android:id="@+id/bottom_sheet_button"
+           android:layout_marginTop="40dp"
+           android:layout_gravity="left"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:paddingBottom="10dp"
@@ -115,16 +121,23 @@ android:fontFamily="@font/altonetrialregular"
                android:id="@+id/holiBtn"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:padding="5dp"
+               android:paddingHorizontal="20dp"
+               android:paddingVertical="5dp"
                android:orientation="horizontal">
+
                <TextView
+                   android:layout_marginRight="10dp"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    android:gravity="center"
                    android:textColor="@color/white"
                    android:textSize="14dp"
 
-                   android:text="Reminder me"/>
+                   android:text="Remind me"/>
+               <ImageView
+                   android:layout_width="20dp"
+                   android:layout_height="20dp"
+                   android:src="@drawable/notifi"/>
            </LinearLayout>
 
        </androidx.cardview.widget.CardView>

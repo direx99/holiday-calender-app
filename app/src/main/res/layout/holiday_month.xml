@@ -1,157 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:cardView="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:card_view="http://schemas.android.com/tools"
+    tools:context=".UpcommingHoliday">
 
-    <LinearLayout
-        android:id="@+id/dottedBar"
-        android:layout_width="2dp"
-        android:layout_height="23dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="30dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/roudedShape"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        app:cardCornerRadius="30dp"
+        >
 
-        android:layout_marginBottom="-16dp">
 
-        <androidx.cardview.widget.CardView
+
+
+
+        <ImageView
+
+            android:id="@+id/thisMonthImage"
+            android:layout_width="match_parent"
+            android:layout_height="887dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/poyabg1"
+
+
+            />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:orientation="vertical"
-            cardView:cardCornerRadius="10dp" />
-        <androidx.cardview.widget.CardView
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:orientation="vertical"
-            android:layout_marginTop="2dp"
-            android:backgroundTint="@color/black"
-            />
-        <androidx.cardview.widget.CardView
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:orientation="vertical"
-            android:layout_marginTop="2dp"
-            android:backgroundTint="@color/black"
-            />
-        <androidx.cardview.widget.CardView
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="2dp"
-            android:orientation="vertical"
-            android:backgroundTint="@color/black"
-            cardView:cardCornerRadius="10dp"
-            />
-        <androidx.cardview.widget.CardView
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:orientation="vertical"
-            android:layout_marginTop="2dp"
-            android:backgroundTint="@color/black"
-            />
-        <androidx.cardview.widget.CardView
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:orientation="vertical"
-            android:layout_marginTop="2dp"
-            android:backgroundTint="@color/black"
-            />
+            android:layout_marginTop="190dp"
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:orientation="vertical"
-            android:layout_marginTop="2dp"
-            android:backgroundTint="@color/black"
-            />
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="0dp"
-        android:layout_marginHorizontal="10dp"
-        android:orientation="horizontal">
-
-
-
-
-
-
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/roundBorder"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:cardCornerRadius="40dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_height="match_parent">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_marginLeft="20dp"
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:backgroundTint="@color/white"
-                        app:cardCornerRadius="40dp"
-                        android:layout_marginRight="20dp"
-
-                        >
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textAlignment="center"
-                            android:gravity="center"
-                            android:textSize="15dp"
-                            android:id="@+id/txtDay"
-                            android:text="9"/>
-
-                    </androidx.cardview.widget.CardView>
-
-
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-
-
-
-
-
-
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/roudedShape"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-
-            cardView:cardBackgroundColor="@color/black"
-            app:cardCornerRadius="15dp"
-            ><LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="5dp"
-            android:paddingLeft="20dp"
-          >
-
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/txtname"
@@ -160,36 +45,90 @@
                 android:fontFamily="@font/altonetrialregular"
                 android:maxLines="1"
                 android:text="@string/Name"
-                android:textColor="@color/white"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/black"
                 android:textSize="20dp" />
-
+            <TextView
+                android:id="@+id/txtType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/altonetrialregular"
+                android:maxLines="1"
+                android:text="@string/Name"
+                android:paddingTop="5dp"
+                android:paddingHorizontal="20dp"
+                android:textColor="@color/gray_dark"
+                android:textSize="15dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
+
+            <TextView
+                android:id="@+id/txtDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8 "
+                android:layout_marginLeft="20dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/gray_dark"
+                android:textSize="25dp" />
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/txtMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marckkh "
+                android:paddingTop="5dp"
+                android:textColor="@color/gray_dark"
+                android:textSize="25dp" />
                 <TextView
-                    android:id="@+id/txtType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="@string/Date"
-                    android:textColor="@color/white"
-                    android:textSize="14dp" />
-                <TextView
-                    android:id="@+id/txtMonth"
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/yr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="January"
-                    android:textSize="15dp"/>
-
+                    android:text="2023 "
+                    android:paddingTop="5dp"
+                    android:textColor="@color/gray_dark"
+                    android:textSize="25dp" />
             </LinearLayout>
 
-
         </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
 
 
+
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

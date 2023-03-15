@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 lateinit var txtMonthHeader : TextView
     var holidayArray = JSONArray()
     lateinit var progressBar: ProgressBar
-    lateinit var todayBtn : Button
 
 
 
@@ -59,7 +59,9 @@ lateinit var txtMonthHeader : TextView
 
         val spinner = findViewById<Spinner>(R.id.spinner)
         val spinner1 = findViewById<Spinner>(R.id.spinner1)
-        todayBtn =  findViewById(R.id.todayBtn)
+        val todayBtn = findViewById<ImageView>(R.id.homeBtn)
+
+
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
         progressBar = findViewById(R.id.progressBar)
 
@@ -226,6 +228,7 @@ lateinit var txtMonthHeader : TextView
         @SuppressLint("ResourceAsColor")
         override fun onBindViewHolder(holder: HolidayHolder, position: Int) {
             try {
+
             //    holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
                 holder.txtname.text = holidayArray.getJSONObject(position).getString("name")
                 holder.txtType.text = holidayArray.getJSONObject(position).getString("primary_type")
@@ -236,6 +239,7 @@ lateinit var txtMonthHeader : TextView
                 if (position == 0 || month != holidayArray.getJSONObject(position - 1).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()) {
                     holder.monthHeader.visibility = View.VISIBLE
                     holder.dottedBar.visibility = View.GONE
+
 
                 } else {
                     holder.monthHeader.visibility = View.GONE

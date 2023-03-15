@@ -2,8 +2,6 @@ package io.dinith.holidayapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
@@ -30,23 +27,19 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import org.w3c.dom.Text
 import java.time.Year
 import java.util.Locale
 
 
 
-class HomeView : AppCompatActivity() {
+class MainView : AppCompatActivity() {
 
     lateinit var holidayViewer : RecyclerView
-    lateinit var allHolidays : RecyclerView
-    lateinit var datenum : TextView
-
     var holidayArray = JSONArray()
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR).toString()
-    val month = calendar.get(Calendar.MONTH) + 1 // January is 0
-    val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
+    val month = calendar.get(Calendar.MONTH) + 2 // January is 0
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
 
     val monthx = month.toString()
 
@@ -67,14 +60,9 @@ class HomeView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_view)
 
-        datenum = findViewById(R.id.datenum)
-        datenum.setText(day)
-
 
 
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
-
-
 
 
 
@@ -97,17 +85,6 @@ class HomeView : AppCompatActivity() {
         val defaultCountryIndex = countries.indexOfFirst { it.first == defaultCountryCode }
 
 
-        val btnbtn : LinearLayout = findViewById(R.id.btnbtn)
-       btnbtn.setOnClickListener {
-            val intent1 = Intent(this@HomeView, MainActivity::class.java)
-            startActivity(intent1)
-        }
-
-
-
-
-
-
 
 
 
@@ -119,12 +96,10 @@ class HomeView : AppCompatActivity() {
 
         holidayViewer = findViewById(R.id.dailyView)
         holidayViewer.layoutManager = LinearLayoutManager(applicationContext,
-            LinearLayoutManager.HORIZONTAL,false)
+            LinearLayoutManager.VERTICAL,false)
         holidayViewer.adapter = HolidayAdapter()
-
-
-
         getHolidaydata(year,monthx)
+
 
 
     }
@@ -132,7 +107,7 @@ class HomeView : AppCompatActivity() {
     fun getHolidaydata(year: String,month: String) {
 
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=faac35c605ffc22e2a9877b1214f0dd7d616fe8d&country=lk&year=$year&month=$month"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=2b7a6949248e64c1e36bebabdc862616972d9e1e&country=lk&year=$year&month=$month"
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
@@ -221,14 +196,13 @@ class HomeView : AppCompatActivity() {
                 holder.txtDay.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("day")
                 //  holder.txtMonthHeader.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
                 val month = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()
-
                 if (position == 0 || month != holidayArray.getJSONObject(position - 1).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()) {
-
+                    holder.dottedBar.visibility = View.GONE
                     holder.roudedShape.visibility = View.VISIBLE
 
 
                 } else {
-
+                    holder.dottedBar.visibility = View.VISIBLE
                     holder.roudedShape.visibility = View.VISIBLE
 
                 }
@@ -240,22 +214,36 @@ class HomeView : AppCompatActivity() {
                             R.color.purple_card
                         )
                     )
-
+                    holder.roundBorder.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.purple_round
+                        )
+                    )
                 }
 
-                else if (holder.txtType.text.toString().equals("Hindu Holiday", ignoreCase = true)) {
-                    val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.holibg1)
-
-
-                    holder.thisMonthImage.setImageBitmap(bitmap)
-
+                else if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
+                    holder.roudedShape.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.green_card
+                        )
+                    )
+                    holder.roundBorder.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.green_round
+                        )
+                    )
                 }
 
-                else if (holder.txtType.text.toString().equals("Season", ignoreCase = true)) {
-                    val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.seosonbg1)
-
-
-                    holder.thisMonthImage.setImageBitmap(bitmap)
+                else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                    holder.roudedShape.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.purple_200
+                        )
+                    )
                 }
                 else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
                     holder.roudedShape.setCardBackgroundColor(
@@ -272,7 +260,12 @@ class HomeView : AppCompatActivity() {
                             R.color.purple_200
                         )
                     )
-
+                    holder.roundBorder.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.purple_card
+                        )
+                    )
                 }
 
 
@@ -280,7 +273,6 @@ class HomeView : AppCompatActivity() {
 
                 holder.txtname.text = holiday.getString("name")
                 holder.txtType.text = holiday.getString("primary_type")
-
 
 
 
@@ -347,7 +339,7 @@ class HomeView : AppCompatActivity() {
 
 
             }catch (e:Exception){
-                Toast.makeText(this@HomeView, e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainView, e.message, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -366,10 +358,10 @@ class HomeView : AppCompatActivity() {
         val txtType : TextView = itemView.findViewById(R.id.txtType)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
         val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
-
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
-        val thisMonthImage : ImageView = itemView.findViewById(R.id.thisMonthImage)
+        val roundBorder : CardView = itemView.findViewById(R.id.roundBorder)
 
+        val dottedBar : LinearLayout = itemView.findViewById(R.id.dottedBar)
 
 
 
@@ -379,13 +371,3 @@ class HomeView : AppCompatActivity() {
 
 
 }
-
-private fun LinearLayout.background(lightgreen: Int) {
-
-}
-
-
-
-
-
-
