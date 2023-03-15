@@ -2,8 +2,6 @@ package io.dinith.holidayapp
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -30,27 +28,16 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import org.w3c.dom.Text
-import java.time.Year
 import java.util.Locale
 
 
 
-class HomeView : AppCompatActivity() {
+class CalendarView : AppCompatActivity() {
 
     lateinit var holidayViewer : RecyclerView
-    lateinit var allHolidays : RecyclerView
-    lateinit var datenum : TextView
-    lateinit var monthShort : TextView
-
-
+    lateinit var txtMonthHeader : TextView
     var holidayArray = JSONArray()
-    val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR).toString()
-    val month = calendar.get(Calendar.MONTH) + 1 // January is 0
-    val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
 
-    val monthx = month.toString()
 
 
     val countries = listOf(
@@ -64,32 +51,27 @@ class HomeView : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        supportActionBar?.hide()
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_view)
+        setContentView(R.layout.activity_calendar_view)
+        supportActionBar?.hide()
 
-        datenum = findViewById(R.id.datenum)
-        datenum.setText(day)
-        var monthName : String = ""
-        when (monthx) {
 
-            "1" -> monthName = "jan"
-            "2" -> monthName=("feb")
-            "3" -> monthName=("mar")
-            "4" -> monthName=("apr")
-            "5" -> monthName=("may")
-            "6" -> monthName=("jun")
-            "7" -> monthName=("jul")
-            "8" -> monthName=("aug")
-            "9" -> monthName=("sep")
-            "10" -> monthName=("oct")
-            "11" -> monthName=("nov")
-            "12" -> monthName=("dec")
-            else -> monthName=("")
+        val btnbtn : ImageView = findViewById(R.id.globeBtn)
+        btnbtn.setOnClickListener {
+            val intent1 = Intent(this@CalendarView, MainActivity::class.java)
+            startActivity(intent1)
         }
-        monthShort = findViewById(R.id.monthShort)
-        monthShort.setText(monthName)
+
+        val homeBtn : ImageView = findViewById(R.id.homeBtn)
+        homeBtn.setOnClickListener {
+            val intent0 = Intent(this@CalendarView, HomeView::class.java)
+            startActivity(intent0)
+        }
+
+
+
+
 
 
 
@@ -97,50 +79,37 @@ class HomeView : AppCompatActivity() {
 
 
 
-
-
-        // ...
-
-        // set the visibility of progress bar to GONE initially
-
-        val data = listOf("2000","2001","2002","2022","2023")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, data)
-
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR).toString()
+        val month = calendar.get(Calendar.MONTH) + 1 // January is 0
+        val monnn = month.toString()
+        val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
 
         var selectedCountry : String = ""
-        var selectedYear : String = ""
+        var selectedYear : String = year
+        var selectedDate : String = day
+        var selectedMonth : String = monnn
 
 
 
+        val calendarView01 = findViewById<android.widget.CalendarView>(R.id.calendarView01)
 
-        val countryAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries.map { it.second })
-        val defaultCountryCode = Locale.getDefault().country
-        val defaultCountryIndex = countries.indexOfFirst { it.first == defaultCountryCode }
-
-
-        val btnbtn : ImageView = findViewById(R.id.globeBtn)
-       btnbtn.setOnClickListener {
-            val intent1 = Intent(this@HomeView, MainActivity::class.java)
-            startActivity(intent1)
-        }
-
-        val homeBtn : ImageView = findViewById(R.id.homeBtn)
-        homeBtn.setOnClickListener {
-            val intent0 = Intent(this@HomeView, HomeView::class.java)
-            startActivity(intent0)
-        }
+        calendarView01.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            // Handle the date selection here
+             selectedDate = dayOfMonth.toString()
+             val mmm = month+1
+            selectedMonth = mmm.toString()
+             selectedYear = year.toString()
+            Toast.makeText(this, "Selected Date: $selectedDate", Toast.LENGTH_SHORT).show()
+            getHolidaydata(selectedYear, "lk" , selectedMonth , selectedDate)
 
 
-
-        val calenderViewBtn : ImageView = findViewById(R.id.calenderViewBtn)
-        calenderViewBtn.setOnClickListener {
-            val intent2 = Intent(this@HomeView, CalendarView::class.java)
-            startActivity(intent2)
         }
 
 
 
 
+        getHolidaydata(selectedYear, "lk" , selectedMonth , selectedDate)
 
 
 
@@ -149,22 +118,21 @@ class HomeView : AppCompatActivity() {
 
 
 
-        holidayViewer = findViewById(R.id.dailyView)
+
+
+        holidayViewer = findViewById(R.id.HolidayView)
         holidayViewer.layoutManager = LinearLayoutManager(applicationContext,
-            LinearLayoutManager.HORIZONTAL,false)
+            LinearLayoutManager.VERTICAL,false)
         holidayViewer.adapter = HolidayAdapter()
 
 
 
-        getHolidaydata(year,monthx)
-
-
     }
     //
-    fun getHolidaydata(year: String,month: String) {
+    fun getHolidaydata(selectedYear : String , selectedCountry : String , selectedMonth : String , selectedDate : String) {
 
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=lk&year=$year&month=$month"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$selectedCountry&year=$selectedYear&month=$selectedMonth&day=$selectedDate"
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
@@ -246,6 +214,7 @@ class HomeView : AppCompatActivity() {
         @SuppressLint("ResourceAsColor")
         override fun onBindViewHolder(holder: HolidayHolder, position: Int) {
             try {
+
                 //    holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
                 holder.txtname.text = holidayArray.getJSONObject(position).getString("name")
                 holder.txtType.text = holidayArray.getJSONObject(position).getString("primary_type")
@@ -253,15 +222,11 @@ class HomeView : AppCompatActivity() {
                 holder.txtDay.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("day")
                 //  holder.txtMonthHeader.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
                 val month = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()
-
                 if (position == 0 || month != holidayArray.getJSONObject(position - 1).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()) {
-
-                    holder.roudedShape.visibility = View.VISIBLE
 
 
                 } else {
 
-                    holder.roudedShape.visibility = View.VISIBLE
 
                 }
 
@@ -269,25 +234,32 @@ class HomeView : AppCompatActivity() {
                     holder.roudedShape.setCardBackgroundColor(
                         ContextCompat.getColor(
                             applicationContext,
-                            R.color.purple_card
+                            R.color.orange_round
+                        )
+                    )
+
+
+
+                }
+
+                else if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
+                    holder.roudedShape.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.green_card
                         )
                     )
 
                 }
 
                 else if (holder.txtType.text.toString().equals("Hindu Holiday", ignoreCase = true)) {
-                    val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.holibg1)
+                    holder.roudedShape.setCardBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.red_card
+                        )
+                    )
 
-
-                    holder.thisMonthImage.setImageBitmap(bitmap)
-
-                }
-
-                else if (holder.txtType.text.toString().equals("Season", ignoreCase = true)) {
-                    val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.seosonbg1)
-
-
-                    holder.thisMonthImage.setImageBitmap(bitmap)
                 }
                 else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
                     holder.roudedShape.setCardBackgroundColor(
@@ -296,6 +268,7 @@ class HomeView : AppCompatActivity() {
                             R.color.purple_200
                         )
                     )
+
 
                 } else {
                     holder.roudedShape.setCardBackgroundColor(
@@ -312,8 +285,11 @@ class HomeView : AppCompatActivity() {
 
                 holder.txtname.text = holiday.getString("name")
                 holder.txtType.text = holiday.getString("primary_type")
-
-
+                holder.roudedShape.setOnClickListener {
+                    val intent = Intent(this@CalendarView, HolidayDetailsActivity::class.java)
+                    intent.putExtra("txtType", holiday.getString("name"))
+                    startActivity(intent)
+                }
 
 
 
@@ -373,13 +349,12 @@ class HomeView : AppCompatActivity() {
                 }
 
 
-                holder.txtMonth.setText( monthName)
 
 
 
 
             }catch (e:Exception){
-                Toast.makeText(this@HomeView, e.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CalendarView, e.message, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -395,12 +370,10 @@ class HomeView : AppCompatActivity() {
 
         val txtname : TextView = itemView.findViewById(R.id.txtname)
 
+
         val txtType : TextView = itemView.findViewById(R.id.txtType)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
-        val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
-
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
-        val thisMonthImage : ImageView = itemView.findViewById(R.id.thisMonthImage)
 
 
 

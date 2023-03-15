@@ -77,7 +77,12 @@ lateinit var txtMonthHeader : TextView
         // set the visibility of progress bar to GONE initially
         progressBar.visibility = View.GONE
 
-        val data = listOf("2000","2001","2002","2022","2023")
+        val data = listOf(
+            "2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020",
+            "2021","2022","2023","2024","2025","2026","2027","2028","2029","2030",
+
+
+        )
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, data)
 
         spinner.adapter = adapter
@@ -251,15 +256,17 @@ lateinit var txtMonthHeader : TextView
                    holder.roudedShape.setCardBackgroundColor(
                        ContextCompat.getColor(
                            applicationContext,
-                           R.color.purple_card
+                           R.color.orange_round
                        )
                    )
                    holder.roundBorder.setCardBackgroundColor(
                        ContextCompat.getColor(
                            applicationContext,
-                           R.color.purple_round
+                           R.color.orange_round
                        )
                    )
+
+
                }
 
                    else if (holder.txtType.text.toString().equals("Observance", ignoreCase = true)) {
@@ -277,16 +284,28 @@ lateinit var txtMonthHeader : TextView
                    )
                }
 
-                       else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
+                       else if (holder.txtType.text.toString().equals("Hindu Holiday", ignoreCase = true)) {
+                   holder.roudedShape.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.red_card
+                       )
+                   )
+                   holder.roundBorder.setCardBackgroundColor(
+                       ContextCompat.getColor(
+                           applicationContext,
+                           R.color.red_card
+                       )
+                   )
+               }
+                           else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
                    holder.roudedShape.setCardBackgroundColor(
                        ContextCompat.getColor(
                            applicationContext,
                            R.color.purple_200
                        )
                    )
-               }
-                           else if (holder.txtType.text.toString().equals("Public Holiday", ignoreCase = true)) {
-                   holder.roudedShape.setCardBackgroundColor(
+                   holder.roundBorder.setCardBackgroundColor(
                        ContextCompat.getColor(
                            applicationContext,
                            R.color.purple_200
@@ -377,7 +396,6 @@ lateinit var txtMonthHeader : TextView
                 }
 
 
-              holder.txtMonth.setText( monthName)
 
 
 
@@ -403,7 +421,6 @@ lateinit var txtMonthHeader : TextView
 
         val txtType : TextView = itemView.findViewById(R.id.txtType)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
-        val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
         val roundBorder : CardView = itemView.findViewById(R.id.roundBorder)
 
