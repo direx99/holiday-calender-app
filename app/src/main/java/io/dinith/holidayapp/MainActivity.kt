@@ -71,6 +71,12 @@ lateinit var txtMonthHeader : TextView
             startActivity(intent)
         }
 
+        val calenderViewBtn : ImageView = findViewById(R.id.calenderViewBtn)
+        calenderViewBtn.setOnClickListener {
+            val intent2 = Intent(this@MainActivity, CalendarView::class.java)
+            startActivity(intent2)
+        }
+
         // ...
 
         // set the visibility of progress bar to GONE initially
@@ -133,7 +139,7 @@ lateinit var txtMonthHeader : TextView
 //
 fun getCountries() {
 
-    val url = "https://calendarific.com/api/v2/countries?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&"
+    val url = "https://calendarific.com/api/v2/countries?&api_key=c1018894f5f0e1bdb893c628e8ff07438bc82a12&"
     val progressDialog = ProgressDialog(this)
     progressDialog.setMessage("Loading...")
     progressDialog.setCancelable(false)
@@ -156,10 +162,11 @@ fun getCountries() {
                 }
                 val spinner = findViewById<Spinner>(R.id.spinner1)
                 val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countryNames)
-                spinner.setSelection(countryCode.indexOf("lk")) // Set default selection here
+               // Set default selection here
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
                 spinner.adapter = adapter
+                spinner.setSelection(193)
                 spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
                     override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -197,7 +204,7 @@ fun getCountries() {
     fun getHolidaydata(selectedYear : String , selectedCountry : String) {
 
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$selectedCountry&year=$selectedYear"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=c1018894f5f0e1bdb893c628e8ff07438bc82a12&country=$selectedCountry&year=$selectedYear"
     progressBar.visibility = View.VISIBLE
 
         val result = StringRequest(Request.Method.GET,url,
@@ -396,6 +403,7 @@ fun getCountries() {
                     intent.putExtra("type", holiday.getString("primary_type"))
                     intent.putExtra("description", holiday.getString("description"))
                     intent.putExtra("day", holiday.getJSONObject("date").getJSONObject("datetime").getString("day"))
+                    intent.putExtra("month", holiday.getJSONObject("date").getJSONObject("datetime").getString("month"))
 
 
 

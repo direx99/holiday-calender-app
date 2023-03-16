@@ -135,7 +135,7 @@ class CalendarView : AppCompatActivity() {
     fun getHolidaydata(selectedYear : String , selectedCountry : String , selectedMonth : String , selectedDate : String) {
 
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$selectedCountry&year=$selectedYear&month=$selectedMonth&day=$selectedDate"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=c1018894f5f0e1bdb893c628e8ff07438bc82a12&country=$selectedCountry&year=$selectedYear&month=$selectedMonth&day=$selectedDate"
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
                 try {
@@ -298,11 +298,7 @@ class CalendarView : AppCompatActivity() {
 
                 holder.txtname.text = holiday.getString("name")
                 holder.txtType.text = holiday.getString("primary_type")
-                holder.roudedShape.setOnClickListener {
-                    val intent = Intent(this@CalendarView, HolidayDetailsActivity::class.java)
-                    intent.putExtra("txtType", holiday.getString("name"))
-                    startActivity(intent)
-                }
+
 
 
 

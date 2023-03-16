@@ -102,7 +102,6 @@
                 android:id="@+id/roundBorder"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:backgroundTint="@color/black"
                 app:cardCornerRadius="40dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="20dp"

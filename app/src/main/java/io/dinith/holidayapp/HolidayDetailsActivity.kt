@@ -16,6 +16,10 @@ class HolidayDetailsActivity : AppCompatActivity() {
         val txtType = intent.getStringExtra("type")
         holidayType.setText(txtType)
 
+        var monthNameShort : String = ""
+
+
+
 
 
         val nameTextView = findViewById<TextView>(R.id.nameTextView)
@@ -38,6 +42,29 @@ class HolidayDetailsActivity : AppCompatActivity() {
         txtDate.setText(day)
 
 
+        val txtMonth = findViewById<TextView>(R.id.txtMonth)
+
+        val month = intent.getStringExtra("month")
+
+
+
+        when (month) {
+            "1" -> monthNameShort = "jan"
+            "2" -> monthNameShort=("feb")
+            "3" -> monthNameShort=("mar")
+            "4" -> monthNameShort=("apr")
+            "5" -> monthNameShort=("May")
+            "6" -> monthNameShort=("June")
+            "7" -> monthNameShort=("July")
+            "8" -> monthNameShort=("August")
+            "9" -> monthNameShort=("September")
+            "10" -> monthNameShort=("October")
+            "11" -> monthNameShort=("November")
+            "12" -> monthNameShort=("December")
+            else -> monthNameShort=("Invalid month number")
+        }
+
+        txtMonth.setText(monthNameShort)
 
 
     }

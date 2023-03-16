@@ -168,7 +168,7 @@ class HomeView : AppCompatActivity() {
 
         prgs1.visibility = View.VISIBLE
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$countryCodeValue&year=$year&month=$month"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=c1018894f5f0e1bdb893c628e8ff07438bc82a12&country=$countryCodeValue&year=$year&month=$month"
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->

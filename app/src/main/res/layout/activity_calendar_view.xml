@@ -128,7 +128,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/hsdark" />
+                    android:src="@drawable/homegray" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
                     android:layout_marginLeft="80dp"
                     android:layout_marginRight="80dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/cal" />
+                    android:src="@drawable/calb" />
             </LinearLayout>
 
             <LinearLayout
