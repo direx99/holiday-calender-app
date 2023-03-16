@@ -46,3 +46,14 @@ Calendria is holiday viewer app use for view holidays filtered by country locati
 | Background color | ![#E2E2E2](https://via.placeholder.com/10/E2E2E2?text=+) #E2E2E2 |
 | Primary text color | ![#000000](https://via.placeholder.com/10/000000?text=+) #000000 |
 
+
+## Contributing
+
+Salman Rizwan  -  COHDSE221f016
+\
+Amashi Silva   -  COHDSE221f002
+\
+Daneej Ahnaf   -  COHDSE221f037
+\
+Dinith Perera  -  COHDSE221f002
+
