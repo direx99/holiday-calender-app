@@ -4,22 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.icu.util.Calendar
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,10 +23,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import org.w3c.dom.Text
-import java.time.Year
-import java.util.Locale
-
+import java.util.*
 
 
 class HomeView : AppCompatActivity() {
@@ -42,6 +32,8 @@ class HomeView : AppCompatActivity() {
     lateinit var allHolidays : RecyclerView
     lateinit var datenum : TextView
     lateinit var monthShort : TextView
+    lateinit var prgs1: ProgressBar
+
 
 
     var holidayArray = JSONArray()
@@ -67,10 +59,22 @@ class HomeView : AppCompatActivity() {
         supportActionBar?.hide()
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home_view)
 
+
+
+
+
+
+
+        setContentView(R.layout.activity_home_view)
+        prgs1 = findViewById(R.id.prgs1)
+        prgs1.visibility = View.VISIBLE
         datenum = findViewById(R.id.datenum)
         datenum.setText(day)
+
+        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        val countryCodeValue = tm.networkCountryIso
+        Log.e("cc","$countryCodeValue")
         var monthName : String = ""
         when (monthx) {
 
@@ -155,19 +159,20 @@ class HomeView : AppCompatActivity() {
         holidayViewer.adapter = HolidayAdapter()
 
 
-
-        getHolidaydata(year,monthx)
+        getHolidaydata(year,monthx,countryCodeValue)
 
 
     }
     //
-    fun getHolidaydata(year: String,month: String) {
+    fun getHolidaydata(year: String,month: String,countryCodeValue : String) {
 
+        prgs1.visibility = View.VISIBLE
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=lk&year=$year&month=$month"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$countryCodeValue&year=$year&month=$month"
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
+
                 try {
                     holidayArray = JSONObject(response).getJSONObject("response").getJSONArray("holidays")
                     val filteredHolidays = JSONArray()
@@ -216,10 +221,15 @@ class HomeView : AppCompatActivity() {
                     holidayViewer.adapter?.notifyDataSetChanged()
 
 
+
                 }
                 catch (e : Exception){
-                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+
                 }
+
+                prgs1.visibility = View.GONE
+
+
 
             }
             ,Response.ErrorListener{ error-> })
@@ -379,7 +389,6 @@ class HomeView : AppCompatActivity() {
 
 
             }catch (e:Exception){
-                Toast.makeText(this@HomeView, e.message, Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -51,6 +51,7 @@
 
 
             <TextView
+                android:id="@+id/txtDate"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,6 +68,7 @@
                 android:orientation="vertical"/>
 
             <TextView
+                android:id="@+id/txtMonth"
                 android:textSize="86dp"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -87,7 +89,7 @@
             android:textSize="40dp" />
 
         <TextView
-            android:id="@+id/type"
+            android:id="@+id/holidayType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/orange_round"
@@ -97,13 +99,13 @@
             />
         <TextView
             android:layout_marginTop="10dp"
-            android:id="@+id/des"
+            android:id="@+id/txtdescription"
 android:fontFamily="@font/altonetrialregular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/mid_blue"
             android:textSize="20dp"
-            android:text="Duruthu Full Moon Poya Day is a public holiday in Sri Lanka"
+            android:text=""
             />
 
        <androidx.cardview.widget.CardView

@@ -20,6 +20,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -34,10 +35,21 @@ import java.util.Locale
 
 class CalendarView : AppCompatActivity() {
 
+    lateinit var nullItem : LinearLayout
     lateinit var holidayViewer : RecyclerView
     lateinit var txtMonthHeader : TextView
     var holidayArray = JSONArray()
+    val itemCount = holidayArray.length()
+    val calendar = Calendar.getInstance()
+    val year = calendar.get(Calendar.YEAR).toString()
+    val month = calendar.get(Calendar.MONTH) + 1 // January is 0
+    val monnn = month.toString()
+    val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
 
+    var selectedCountry : String = ""
+    var selectedYear : String = year
+    var selectedDate : String = day
+    var selectedMonth : String = monnn
 
 
     val countries = listOf(
@@ -79,18 +91,9 @@ class CalendarView : AppCompatActivity() {
 
 
 
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR).toString()
-        val month = calendar.get(Calendar.MONTH) + 1 // January is 0
-        val monnn = month.toString()
-        val day = calendar.get(Calendar.DAY_OF_MONTH).toString()
-
-        var selectedCountry : String = ""
-        var selectedYear : String = year
-        var selectedDate : String = day
-        var selectedMonth : String = monnn
 
 
+        nullItem = findViewById(R.id.nullItem)
 
         val calendarView01 = findViewById<android.widget.CalendarView>(R.id.calendarView01)
 
@@ -100,7 +103,6 @@ class CalendarView : AppCompatActivity() {
              val mmm = month+1
             selectedMonth = mmm.toString()
              selectedYear = year.toString()
-            Toast.makeText(this, "Selected Date: $selectedDate", Toast.LENGTH_SHORT).show()
             getHolidaydata(selectedYear, "lk" , selectedMonth , selectedDate)
 
 
@@ -119,7 +121,6 @@ class CalendarView : AppCompatActivity() {
 
 
 
-
         holidayViewer = findViewById(R.id.HolidayView)
         holidayViewer.layoutManager = LinearLayoutManager(applicationContext,
             LinearLayoutManager.VERTICAL,false)
@@ -129,14 +130,16 @@ class CalendarView : AppCompatActivity() {
 
     }
     //
+
+
     fun getHolidaydata(selectedYear : String , selectedCountry : String , selectedMonth : String , selectedDate : String) {
 
 
         val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$selectedCountry&year=$selectedYear&month=$selectedMonth&day=$selectedDate"
-
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
                 try {
+
                     holidayArray = JSONObject(response).getJSONObject("response").getJSONArray("holidays")
                     val filteredHolidays = JSONArray()
                     for (i in 0 until holidayArray.length()) {
@@ -186,9 +189,16 @@ class CalendarView : AppCompatActivity() {
 
                 }
                 catch (e : Exception){
-                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+                }
+                if (itemCount == 0){
+                    nullItem.visibility = View.VISIBLE
+
                 }
 
+                else
+                {
+                    nullItem.visibility = View.GONE
+                }
             }
             ,Response.ErrorListener{ error-> })
 
@@ -208,7 +218,10 @@ class CalendarView : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
+
             return holidayArray.length()
+
+
         }
 
         @SuppressLint("ResourceAsColor")
@@ -333,8 +346,8 @@ class CalendarView : AppCompatActivity() {
                 }
 
                 when (getmonth) {
-                    "1" -> monthNameLong = "jan"
-                    "2" -> monthNameLong=("feb")
+                    "1" -> monthNameLong = "January"
+                    "2" -> monthNameLong=("February")
                     "3" -> monthNameLong=("March")
                     "4" -> monthNameLong=("April")
                     "5" -> monthNameLong=("May")
@@ -349,12 +362,12 @@ class CalendarView : AppCompatActivity() {
                 }
 
 
-
+                holder.txtMonth.setText(monthNameLong)
+                holder.txtYr.setText(selectedYear)
 
 
 
             }catch (e:Exception){
-                Toast.makeText(this@CalendarView, e.message, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -373,6 +386,10 @@ class CalendarView : AppCompatActivity() {
 
         val txtType : TextView = itemView.findViewById(R.id.txtType)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
+
+
+        val txtMonth : TextView = itemView.findViewById(R.id.txtMonth)
+        val txtYr : TextView = itemView.findViewById(R.id.yr)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
 
 

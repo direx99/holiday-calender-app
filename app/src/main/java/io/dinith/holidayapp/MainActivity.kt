@@ -1,23 +1,17 @@
 package io.dinith.holidayapp
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
-import android.graphics.Color
 import android.icu.util.Calendar
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,8 +22,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject
-import java.util.Locale
-
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var holidayViewer : RecyclerView
 lateinit var txtMonthHeader : TextView
     var holidayArray = JSONArray()
+    private var selectedCountryCode: String = ""
+    var selectedYear : String = ""
+    var countryCodeValue : String =""
+
     lateinit var progressBar: ProgressBar
 
 
@@ -56,10 +53,12 @@ lateinit var txtMonthHeader : TextView
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
          supportActionBar?.hide()
-
+        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+         countryCodeValue = tm.networkCountryIso
+        var cn = countryCodeValue.toString()
         val spinner = findViewById<Spinner>(R.id.spinner)
-        val spinner1 = findViewById<Spinner>(R.id.spinner1)
         val todayBtn = findViewById<ImageView>(R.id.homeBtn)
+
 
 
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
@@ -88,49 +87,32 @@ lateinit var txtMonthHeader : TextView
         spinner.adapter = adapter
         spinner.setSelection(data.indexOf(currentYear))
         var selectedCountry : String = ""
-        var selectedYear : String = ""
-
+        getCountries()
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedItem = parent.getItemAtPosition(position) as String
-                Toast.makeText(applicationContext,"Selected $selectedItem", Toast.LENGTH_LONG).show()
                 selectedYear = selectedItem
-                getHolidaydata(selectedYear, selectedCountry)
+                Log.e("yr", "$selectedYear")
+
+
 
             }
+
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Do nothing
             }
         }
-
-
+        Log.e("yr", "$selectedYear")
 
         val countryAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countries.map { it.second })
         val defaultCountryCode = Locale.getDefault().country
         val defaultCountryIndex = countries.indexOfFirst { it.first == defaultCountryCode }
 
-        spinner1.adapter = countryAdapter
-        spinner1.setSelection(defaultCountryIndex)
 
 
 
-        spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedItem = parent.getItemAtPosition(position) as String
-                Toast.makeText(applicationContext,"Selected $selectedItem", Toast.LENGTH_LONG).show()
-
-                selectedCountry = countries[position].first
-
-                getHolidaydata(selectedYear, selectedCountry)
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing
-            }
-        }
 
 
 
@@ -144,17 +126,85 @@ lateinit var txtMonthHeader : TextView
 
 
 
+
+
+
     }
 //
+fun getCountries() {
+
+    val url = "https://calendarific.com/api/v2/countries?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&"
+    val progressDialog = ProgressDialog(this)
+    progressDialog.setMessage("Loading...")
+    progressDialog.setCancelable(false)
+    progressDialog.show()
+
+    val result = StringRequest(Request.Method.GET, url,
+        Response.Listener { response ->
+            try {
+
+                val countriesList = JSONObject(response).getJSONObject("response").getJSONArray("countries")
+                val countryNames = ArrayList<String>()
+                val countryCode = ArrayList<String>()
+
+                for (i in 0 until countriesList.length()) {
+                    val country = countriesList.getJSONObject(i)
+                    val countryName = country.getString("country_name")
+                    val cntryCode = country.getString("iso-3166")
+                    countryNames.add(countryName)
+                    countryCode.add(cntryCode)
+                }
+                val spinner = findViewById<Spinner>(R.id.spinner1)
+                val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, countryNames)
+                spinner.setSelection(countryCode.indexOf("lk")) // Set default selection here
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                spinner.adapter = adapter
+                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                    override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                        selectedCountryCode = countryCode[position]
+                        Log.e("selected country code", selectedCountryCode.toString())
+                        getHolidaydata(selectedYear, selectedCountryCode)
+
+
+
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>) {}
+                }
+                Log.e("def","$countryCodeValue")
+
+
+
+                progressDialog.dismiss()
+
+            }
+            catch (e : Exception){
+                progressDialog.dismiss()
+            }
+            Log.e("output" ,"$url")
+            progressDialog.dismiss()
+
+        }
+        ,Response.ErrorListener{ error->
+
+        })
+
+    Volley.newRequestQueue(this).add(result)
+}
+
+
     fun getHolidaydata(selectedYear : String , selectedCountry : String) {
 
 
-        val url = "https://calendarific.com/api/v2/holidays?&api_key=faac35c605ffc22e2a9877b1214f0dd7d616fe8d&country=$selectedCountry&year=$selectedYear"
+        val url = "https://calendarific.com/api/v2/holidays?&api_key=32971f3ae76af58d68a019242fcbae38f0810333&country=$selectedCountry&year=$selectedYear"
     progressBar.visibility = View.VISIBLE
 
         val result = StringRequest(Request.Method.GET,url,
             Response.Listener { response ->
                 try {
+
+
                     holidayArray = JSONObject(response).getJSONObject("response").getJSONArray("holidays")
                     val filteredHolidays = JSONArray()
                     for (i in 0 until holidayArray.length()) {
@@ -204,9 +254,10 @@ lateinit var txtMonthHeader : TextView
 
                 }
                 catch (e : Exception){
-                    Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                 }
                 progressBar.visibility = View.GONE
+                Log.e("output" ,"$url")
+
 
             }
             ,Response.ErrorListener{ error-> })
@@ -237,8 +288,11 @@ lateinit var txtMonthHeader : TextView
             //    holder.txtdate.text = holidayArray.getJSONObject(position).getJSONObject("date").getString("iso")
                 holder.txtname.text = holidayArray.getJSONObject(position).getString("name")
                 holder.txtType.text = holidayArray.getJSONObject(position).getString("primary_type")
-                var getmonth = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
+                holder.des.text  =  holidayArray.getJSONObject(position).getString("description")
                 holder.txtDay.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("day")
+
+                var getmonth = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
+
               //  holder.txtMonthHeader.text  = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month")
                 val month = holidayArray.getJSONObject(position).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()
                 if (position == 0 || month != holidayArray.getJSONObject(position - 1).getJSONObject("date").getJSONObject("datetime").getString("month").toInt()) {
@@ -330,11 +384,22 @@ lateinit var txtMonthHeader : TextView
 
                 val holiday = holidayArray.getJSONObject(position)
 
-                holder.txtname.text = holiday.getString("name")
-                holder.txtType.text = holiday.getString("primary_type")
+//                holder.txtname.text = holiday.getString("name")
+//                holder.txtType.text = holiday.getString("primary_type")
+//                holder.des.text = holiday.getString("description")
+//                holder.txtDay.text = holiday.getJSONObject("date").getJSONObject("datetime").getString("day")
+
+
                 holder.roudedShape.setOnClickListener {
                     val intent = Intent(this@MainActivity, HolidayDetailsActivity::class.java)
-                    intent.putExtra("txtType", holiday.getString("name"))
+                    intent.putExtra("name", holiday.getString("name"))
+                    intent.putExtra("type", holiday.getString("primary_type"))
+                    intent.putExtra("description", holiday.getString("description"))
+                    intent.putExtra("day", holiday.getJSONObject("date").getJSONObject("datetime").getString("day"))
+
+
+
+
                     startActivity(intent)
                 }
 
@@ -402,7 +467,6 @@ lateinit var txtMonthHeader : TextView
                 holder.monthHeader.setText( monthNameShort)
 
             }catch (e:Exception){
-                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -418,14 +482,13 @@ lateinit var txtMonthHeader : TextView
 
         val txtname : TextView = itemView.findViewById(R.id.txtname)
         val monthHeader : TextView = itemView.findViewById(R.id.monthHeader)
-
         val txtType : TextView = itemView.findViewById(R.id.txtType)
+        val des : TextView = itemView.findViewById(R.id.des)
         val txtDay : TextView = itemView.findViewById(R.id.txtDay)
         val roudedShape : CardView = itemView.findViewById(R.id.roudedShape)
         val roundBorder : CardView = itemView.findViewById(R.id.roundBorder)
 
         val dottedBar : LinearLayout = itemView.findViewById(R.id.dottedBar)
-
 
 
 

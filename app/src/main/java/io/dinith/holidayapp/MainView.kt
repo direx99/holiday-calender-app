@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,8 +39,9 @@ class MainView : AppCompatActivity() {
     var holidayArray = JSONArray()
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR).toString()
-    val month = calendar.get(Calendar.MONTH) + 2 // January is 0
+    val month = calendar.get(Calendar.MONTH) + 1 // January is 0
     val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private lateinit var progressBar: ProgressBar
 
     val monthx = month.toString()
 
@@ -60,15 +62,15 @@ class MainView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_view)
 
-
+        var tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        var countryCodeValue = tm.networkCountryIso
 
         val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
+        progressBar = findViewById(R.id.progressBar)
 
 
 
-        // ...
 
-        // set the visibility of progress bar to GONE initially
 
         val data = listOf("2000","2001","2002","2022","2023")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, data)
@@ -98,6 +100,8 @@ class MainView : AppCompatActivity() {
         holidayViewer.layoutManager = LinearLayoutManager(applicationContext,
             LinearLayoutManager.VERTICAL,false)
         holidayViewer.adapter = HolidayAdapter()
+        progressBar.visibility = View.VISIBLE
+
         getHolidaydata(year,monthx)
 
 
@@ -105,6 +109,7 @@ class MainView : AppCompatActivity() {
     }
     //
     fun getHolidaydata(year: String,month: String) {
+        progressBar.visibility = View.VISIBLE
 
 
         val url = "https://calendarific.com/api/v2/holidays?&api_key=2b7a6949248e64c1e36bebabdc862616972d9e1e&country=lk&year=$year&month=$month"
@@ -157,6 +162,8 @@ class MainView : AppCompatActivity() {
                     holidayArray = filteredHolidays
 
                     holidayViewer.adapter?.notifyDataSetChanged()
+                    progressBar.visibility = View.GONE
+
 
 
                 }
@@ -164,11 +171,11 @@ class MainView : AppCompatActivity() {
                     Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
                 }
 
+
             }
             ,Response.ErrorListener{ error-> })
 
         Volley.newRequestQueue(applicationContext).add(result)
-
     }
 
     inner class HolidayAdapter : RecyclerView.Adapter<HolidayHolder>(){

@@ -47,7 +47,7 @@
                 android:text="@string/Name"
                 android:paddingHorizontal="20dp"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="25dp" />
             <TextView
                 android:id="@+id/txtType"
                 android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                 android:layout_marginLeft="20dp"
                 android:paddingTop="5dp"
                 android:textColor="@color/gray_dark"
-                android:textSize="25dp" />
+                android:textSize="20dp" />
             <TextView
                 android:layout_marginLeft="5dp"
                 android:id="@+id/txtMonth"
@@ -82,7 +82,7 @@
                 android:text="Marckkh "
                 android:paddingTop="5dp"
                 android:textColor="@color/gray_dark"
-                android:textSize="25dp" />
+                android:textSize="20dp" />
                 <TextView
                     android:layout_marginLeft="5dp"
                     android:id="@+id/yr"
@@ -91,7 +91,7 @@
                     android:text="2023 "
                     android:paddingTop="5dp"
                     android:textColor="@color/gray_dark"
-                    android:textSize="25dp" />
+                    android:textSize="20dp" />
             </LinearLayout>
 
         </LinearLayout>

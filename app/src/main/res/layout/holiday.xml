@@ -102,6 +102,7 @@
                 android:id="@+id/roundBorder"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:backgroundTint="@color/black"
                 app:cardCornerRadius="40dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="20dp"
@@ -129,7 +130,6 @@
                             android:textAlignment="center"
                             android:gravity="center"
                             android:textSize="22dp"
-                            android:layout_marginTop="2dp"
                             android:id="@+id/txtDay"
                             android:text="9"/>
 
@@ -152,7 +152,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/roudedShape"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
 
             cardView:cardBackgroundColor="@color/black"
             app:cardCornerRadius="15dp"
@@ -163,18 +163,17 @@
             android:gravity="center"
             android:paddingHorizontal="20dp"
             android:paddingLeft="20dp"
-
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
           >
 
 
             <TextView
-                android:paddingTop="5dp"
                 android:id="@+id/txtname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Name"
                 android:lines="1"
-                android:fontFamily="@font/altonetrialregular"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
 
@@ -192,7 +191,15 @@
                     android:layout_height="20dp"
                     android:text="@string/Date"
                     android:textColor="@color/white"
-                    android:textSize="12dp" />
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text=""
+                    android:visibility="invisible"
+                    android:textSize="0dp" />
 
 
             </LinearLayout>
